@@ -14,6 +14,8 @@ app.use(publicRouter);
 app.use(errorMiddleware);
 
 // Dev
-app.listen(port, () => {
-  console.log(`Server running on PORT: ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server running on PORT: ${port}`);
+// });
+
+export default app;
