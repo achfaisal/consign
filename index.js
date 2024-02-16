@@ -13,6 +13,8 @@ app.use(express.json());
 app.use(publicRouter);
 app.use(errorMiddleware);
 
-app.listen(port, () => {
-  console.log(`Server running on PORT: ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server running on PORT: ${port}`);
+// });
+
+export default app;
