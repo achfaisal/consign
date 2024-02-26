@@ -14,7 +14,19 @@ model User {
   username  String  @id @db.VarChar(100)
   password  String  @db.VarChar(100)
   name      String  @db.VarChar(100)
-  token     String? @db.VarChar(100)
+  posts     Post[]  @relation("UserToPost")
 
   @@map("users")
+}
+
+model Post {
+  id          Int     @id @default(autoincrement())
+  userId      String  @db.VarChar(100)
+  title       String
+  description String
+  image       String?
+  price       Int
+  user        User    @relation("UserToPost", fields: [userId], references: [username])
+
+  @@map("posts")
 }
