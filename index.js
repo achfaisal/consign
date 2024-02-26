@@ -25,6 +25,16 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
+
+  // Set the SameSite=None attribute
+  res.setHeader("Set-Cookie", "cookieName=value; SameSite=None; Secure");
+  next();
+});
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/images", express.static(path.join(__dirname, "images")));
