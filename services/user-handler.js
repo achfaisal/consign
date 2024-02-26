@@ -114,8 +114,16 @@ const getHandler = async (req, res) => {
 };
 
 const logoutHandler = async (req, res) => {
-  res.clearCookie("token");
-  res.clearCookie("refreshToken");
+  res.cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+
+  // Clear the refreshToken cookie
+  res.cookie("refreshToken", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
 };
 
 export { registerHandler, loginHandler, getHandler, logoutHandler };
