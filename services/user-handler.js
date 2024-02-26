@@ -46,7 +46,7 @@ const registerHandler = async (req, res) => {
 };
 
 const loginHandler = async (req, res) => {
-  const request = await req.body;
+  const request = req.body;
   const validatedRequest = loginUserValidation.validate(request);
   if (validatedRequest.error) {
     const error = validatedRequest.error.details.map((error) => error.message);
