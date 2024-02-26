@@ -88,8 +88,8 @@ const loginHandler = async (req, res) => {
     }
   );
 
-  res.cookie("token", token, { httpOnly: true, secure: true });
-  res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
+  res.cookie("token", token);
+  res.cookie("refreshToken", refreshToken);
   return { token, refreshToken };
 };
 
@@ -115,14 +115,14 @@ const getHandler = async (req, res) => {
 
 const logoutHandler = async (req, res) => {
   res.cookie("token", "", {
-    httpOnly: true,
     expires: new Date(0),
+    maxAge: 0,
   });
 
   // Clear the refreshToken cookie
   res.cookie("refreshToken", "", {
-    httpOnly: true,
     expires: new Date(0),
+    maxAge: 0,
   });
 };
 
