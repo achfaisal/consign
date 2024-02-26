@@ -28,7 +28,7 @@ export const authMiddleware = async (req, res, next) => {
               process.env.SECRET,
               { expiresIn: "5s" }
             );
-            res.cookie("token", newToken, { httpOnly: true });
+            res.cookie("token", newToken, { httpOnly: true, secure: true });
             req.body.username = decodedRefresh.username;
             return next();
           }

@@ -11,7 +11,7 @@ import { prismaClient } from "../application/database.js";
 import jwt from "jsonwebtoken";
 
 const registerHandler = async (req, res) => {
-  const request = await req.body;
+  const request = req.body;
 
   const validatedRequest = registrationUserValidation.validate(request);
   if (validatedRequest.error) {
@@ -88,8 +88,8 @@ const loginHandler = async (req, res) => {
     }
   );
 
-  res.cookie("token", token);
-  res.cookie("refreshToken", refreshToken);
+  res.cookie("token", token, { httpOnly: true, secure: true });
+  res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
   return { token, refreshToken };
 };
 
