@@ -88,8 +88,17 @@ const loginHandler = async (req, res) => {
     }
   );
 
-  res.cookie("token", token);
-  res.cookie("refreshToken", refreshToken);
+  res.cookie("token", token, {
+    httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+    secure: true, // Ensures the cookie is only sent over HTTPS
+    sameSite: "None", // Allows the cookie to be sent in a cross-origin request
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
   return { token, refreshToken };
 };
 
