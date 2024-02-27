@@ -31,7 +31,7 @@ export const authMiddleware = async (req, res, next) => {
             res.cookie("token", newToken, {
               httpOnly: true,
               secure: true,
-              sameSite: "None",
+              sameSite: "Lax",
               expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             });
             req.body.username = decodedRefresh.username;
