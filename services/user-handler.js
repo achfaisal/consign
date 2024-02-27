@@ -89,9 +89,9 @@ const loginHandler = async (req, res) => {
   );
 
   res.cookie("token", token, {
-    httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-    secure: true, // Ensures the cookie is only sent over HTTPS
-    sameSite: "None", // Allows the cookie to be sent in a cross-origin request
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
   });
 
   res.cookie("refreshToken", refreshToken, {
@@ -128,7 +128,6 @@ const logoutHandler = async (req, res) => {
     maxAge: 0,
   });
 
-  // Clear the refreshToken cookie
   res.cookie("refreshToken", "", {
     expires: new Date(0),
     maxAge: 0,
