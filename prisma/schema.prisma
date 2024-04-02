@@ -14,6 +14,7 @@ model User {
   username  String  @id @db.VarChar(100)
   password  String  @db.VarChar(100)
   name      String  @db.VarChar(100)
+  phone     String  @db.VarChar(100)
   posts     Post[]  @relation("UserToPost")
 
   @@map("users")
@@ -24,9 +25,20 @@ model Post {
   userId      String  @db.VarChar(100)
   title       String
   description String
-  image       String?
+  image       String[]
   price       Int
+  isAvailable Boolean @default(true)
   user        User    @relation("UserToPost", fields: [userId], references: [username])
+  images      Image[] @relation("PostToImage")
 
   @@map("posts")
+}
+
+model Image {
+  id        Int    @id @default(autoincrement())
+  postId    Int
+  imageUrl  String
+  post      Post   @relation("PostToImage", fields: [postId], references: [id])
+
+  @@map("images")
 }

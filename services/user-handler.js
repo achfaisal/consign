@@ -21,7 +21,7 @@ const registerHandler = async (req, res) => {
 
   validatedRequest.value.password = await bcrypt.hash(
     validatedRequest.value.password,
-    10
+    10,
   );
 
   console.log(validatedRequest);
@@ -60,6 +60,7 @@ const loginHandler = async (req, res) => {
     select: {
       username: true,
       password: true,
+      name: true,
     },
   });
 
@@ -69,39 +70,28 @@ const loginHandler = async (req, res) => {
 
   const checkPassword = await bcrypt.compare(
     validatedRequest.value.password,
-    checkUser.password
+    checkUser.password,
   );
 
   if (!checkPassword) {
     throw new ResponseError(401, "Pass not valid");
   }
-
+  const { username } = checkUser;
   const token = jwt.sign({ username: checkUser.username }, process.env.SECRET, {
-    expiresIn: "5s",
+    expiresIn: "1d",
   });
 
-  const refreshToken = jwt.sign(
-    { username: checkUser.username },
-    process.env.SECRET_REFRESH,
-    {
-      expiresIn: "3d",
-    }
-  );
+  res.cookie("jwt", token, { httpOnly: true, path: "/" });
 
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "Lax",
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-  });
+  // const refreshToken = jwt.sign(
+  //   { username: checkUser.username },
+  //   process.env.SECRET_REFRESH,
+  //   {
+  //     expiresIn: "3d",
+  //   }
+  // );
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "Lax",
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-  });
-  return { token, refreshToken };
+  return { token };
 };
 
 const getHandler = async (req, res) => {
@@ -115,6 +105,7 @@ const getHandler = async (req, res) => {
     select: {
       username: true,
       name: true,
+      phone: true,
     },
   });
 
@@ -125,15 +116,8 @@ const getHandler = async (req, res) => {
 };
 
 const logoutHandler = async (req, res) => {
-  res.cookie("token", "", {
-    expires: new Date(0),
-    maxAge: 0,
-  });
-
-  res.cookie("refreshToken", "", {
-    expires: new Date(0),
-    maxAge: 0,
-  });
+  res.clearCookie("jwt", { httpOnly: true, path: "/" });
+  console.log("cookie cleared");
 };
 
 export { registerHandler, loginHandler, getHandler, logoutHandler };

@@ -20,9 +20,9 @@ const port = process.env.PORT;
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow requests from this origin
-    credentials: true, // Allow credentials (cookies) to be sent with requests
-  })
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
 );
 
 app.use(express.json());
@@ -35,7 +35,7 @@ app.use(
     limits: {
       fileSize: 5 * 1024 * 1024, // 5MB limit
     },
-  }).single("image")
+  }).array("image", 3),
 );
 app.use(publicRouter);
 app.use(router);
